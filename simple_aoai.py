@@ -1,7 +1,10 @@
 from openai import AzureOpenAI
-from env import api_key, azure_endpoint, api_version, deployment_name
+from env import api_key, azure_endpoint, deployment_name
 
 # Documentation on the API: https://learn.microsoft.com/en-us/azure/ai-services/openai/
+
+# Set calling API version
+api_version = "2023-05-15"
 
 # Create Azure OpenAI object
 client = AzureOpenAI(
@@ -9,7 +12,6 @@ client = AzureOpenAI(
         azure_endpoint=azure_endpoint,
         api_version=api_version
     )
-deployment_name = deployment_name
 
 # Sample call log - This sample was generated via ChatGPT. :-)
 call_logs = [['''
@@ -36,9 +38,13 @@ call_logs = [['''
 response = client.chat.completions.create(
   model = deployment_name,
   messages = [{"role":"system",
-                   "content":"Please summarize the following call log and categorize it as resolved or unresolved."},
+                   "content":'''You are charged with reviewing calls for a banking service center. Please review the call log below and provide the following three elements: 
+                       #1 - Summarize the call in one sentence, 
+                       #2 - Categorize the call using a category of your choosing,
+                       #3 - Indicate whether the callers issue was resolved or not. Use Resolved or Unresolved to indicate the same.
+                       Provide this information in separate lines with clear field names.'''},
                {"role":"user",
-                    "content":call_logs[0]}]
+                    "content":call_logs[0][0]}]
   )
 text_result = response.choices[0].message.content
 
