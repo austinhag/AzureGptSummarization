@@ -11,7 +11,7 @@ client = AzureOpenAI(
         api_key=api_key,
         azure_endpoint=azure_endpoint,
         api_version=api_version
-    )
+        )
 
 # Sample call log - This sample was generated via ChatGPT. :-)
 call_logs = [['''
@@ -41,10 +41,11 @@ response = client.chat.completions.create(
                    "content":'''You are charged with reviewing calls for a banking service center. Please review the call log below and provide the following three elements: 
                        #1 - Summarize the call in one sentence, 
                        #2 - Categorize the call using a category of your choosing,
-                       #3 - Indicate whether the callers issue was resolved or not. Use Resolved or Unresolved to indicate the same.
+                       #3 - Indicate whether the caller's issue was resolved or not. Use Resolved or Unresolved to indicate the same.
                        Provide this information in separate lines with clear field names.'''},
                {"role":"user",
-                    "content":call_logs[0][0]}]
+                    "content":call_logs[0][0]}],
+  temperature=0
   )
 text_result = response.choices[0].message.content
 
