@@ -6,7 +6,7 @@ import time
 from env import api_key, azure_endpoint, deployment_name
 
 # Set operating paramters
-recover = False  # Recover from prior executions. Requires results.csv file to exist.
+recover = True  # Recover from prior executions. Requires results.csv file to exist.
 throttle = 0   # Set the number of seconds to wait before executing API call in each thread.
 
 # Set calling API version
