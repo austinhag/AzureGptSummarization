@@ -23,7 +23,10 @@ df_logs = pd.read_csv("sample_logs.csv")
                      
 # This is the worker function for multithreading. It calls GPT for an individual call log and returns results
 def call_api(call_log):
-    print(f"New thread created for log #: {call_log[0]}")
+    logid = call_log[0]
+    logtext = call_log[1]
+    
+    print(f"New thread created for log #: {logid}")
     client = AzureOpenAI(
             api_key=api_key,
             azure_endpoint=azure_endpoint,
@@ -33,14 +36,14 @@ def call_api(call_log):
     # Call Azure OpenAI and have it process the sample call log
     response = client.chat.completions.create(
       model = deployment_name,
-      messages = [instructions,{"role":"user","content":call_log[1]}],
+      messages = [instructions,{"role":"user","content":logtext}],
       temperature = 0
       )
     text_result = response.choices[0].message.content
-    print(f"Thread completed for log #: {call_log[0]}")
+    print(f"Thread completed for log #: {logid}")
     
     # Return results    
-    return([call_log[0],call_log[1], text_result])
+    return([logid, logtext, text_result])
 
 # Main function. Runs and manages multithreading and coordination of results
 def main():
